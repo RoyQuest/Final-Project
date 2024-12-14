@@ -1,0 +1,15 @@
+class Team:
+    def __init__(self, name, players):
+        self.name = name
+        self.players = players
+
+    def add_player(self, player):
+        self.players.append(player)
+
+class TrainingPlan:
+    def __init__(self, focus, drills):
+        self.focus = focus
+        self.drills = drills
+
+    def summarize(self):
+        return f"Focus: {self.focus}, Drills: {', '.join(self.drills)}"
