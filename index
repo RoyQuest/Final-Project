@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="/generate" method="POST">
+        <label for="team">Team Name:</label>
+        <input type="text" id="team" name="team" required>
+
+        <label for="focus">Training Focus:</label>
+        <input type="text" id="focus" name="focus" required>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+
+        <button type="submit">Generate Plan</button>
+    </form>
+{% endblock %}
