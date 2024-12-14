@@ -1,0 +1,57 @@
+import requests
+import openai
+import os
+
+class WeatherAPI:
+    #Handles weather API
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.base_url = "https://api.openweathermap.org/data/2.5/weather"
+
+    def get_weather(self, city, units="metric"):
+        params = {
+            "q": city,
+            "appid": self.api_key,
+            "units": units
+        }
+        try:
+            response = requests.get(self.base_url, params=params)
+            response.raise_for_status()
+            data = response.json()
+            return {
+                "temperature": data["main"]["temp"],
+                "humidity": data["main"]["humidity"],
+                "conditions": data["weather"][0]["description"]
+            }
+        except requests.RequestException as e:
+            return {"error": f"Failed to fetch weather data: {str(e)}"}
+
+
+class OpenAIAPI:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        openai.api_key = api_key
+
+    def generate_training_plan(self, focus):
+        prompt = f"Create a soccer training plan focused on {focus}."
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant that creates soccer training plans."},
+                    {"role": "user", "content": prompt}
+                ],
+                response_format={
+                    "type": "text"
+                },
+                temperature=1,
+                max_tokens=2048,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0
+            )
+            return response['choices'][0]['message']['content'].strip().split("\n")
+        except openai.OpenAIError as e:
+            return [f"Error generating training plan: {str(e)}"]
+
+
