@@ -1,0 +1,5 @@
+import pyqrcode
+url = pyqrcode.create('http://127.0.0.1:5000/')
+url.svg('uca-url.svg', scale=4)
+url.eps('uca-url.eps', scale=1)
+print(url.terminal(quiet_zone=1))
